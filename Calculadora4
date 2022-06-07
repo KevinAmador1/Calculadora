@@ -1,0 +1,154 @@
+from cProfile import label
+from calendar import c
+from cgitb import text
+from msilib.schema import Font
+from tkinter import *
+from tkinter import ttk
+import math
+from tkinter import font
+import tkinter as tk
+
+
+
+root = Tk()
+root.title("Calculadora")
+root.geometry("+500+80")
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+estilos = ttk.Style()
+estilos.theme_use('clam')
+estilos.configure('mainframe.TFrame', background="#DBDBDB")
+
+
+mainframe = ttk.Frame(root, style="mainframe.TFrame")
+mainframe.grid(column=0, row=0, sticky=(W, N, E, S))
+mainframe.columnconfigure(0, weight=1)
+mainframe.columnconfigure(1, weight=1)
+mainframe.columnconfigure(2, weight=1)
+mainframe.columnconfigure(3, weight=1)
+
+mainframe.rowconfigure(0, weight=1)
+mainframe.rowconfigure(1, weight=1)
+mainframe.rowconfigure(2, weight=1)
+mainframe.rowconfigure(3, weight=1)
+mainframe.rowconfigure(4, weight=1)
+mainframe.rowconfigure(5, weight=1)
+mainframe.rowconfigure(6, weight=1)
+mainframe.rowconfigure(7, weight=1)
+
+
+
+
+estilos_label2 = ttk.Style()
+estilos_label2.configure('Lalbel2.TLabel', font="arial 35", anchor="e" )
+
+
+
+
+
+entrada2 = StringVar()
+label_entrda2 = ttk.Label(mainframe, textvariable=entrada2, style="Lalbel2.TLabel", justify="right")
+label_entrda2.grid(column=0, row=1, columnspan=4, sticky=(W,N,E,S))
+
+estilos_botones_numeros = ttk.Style()
+estilos_botones_numeros.configure('Botones_numeros.TButton', font="arial 22", width=5, background="#FFFFFF", relief="flat")
+estilos_botones_numeros.map('Botones_numeros.TButton', background=[('active', '#B9B9B9')])
+
+estilos_botones_borrar = ttk.Style()
+estilos_botones_borrar.configure('Botnotes_borrar.TButton', font="aria 22", width=5, relief="flat", background="#CECECE")
+estilos_botones_borrar.map('Botnotes_borrar.TButton', foreground=[('active', '#FF0000')], background=[('active', '#858585')])
+
+estilos_botones_restantes = ttk.Style()
+estilos_botones_restantes.configure('Botnotes_restantes.TButton', font="aria 22", width=5, relief="flat", background="#CECECE")
+estilos_botones_restantes.map('Botnotes_restantes.TButton', background=[('active', '#858585')])
+
+
+operador = ""
+
+def clear():
+    global operador
+    operador = ""
+    entrada2.set(operador)    
+    return
+
+
+def get_number(num):
+    global operador
+    operador = operador + str(num)
+    entrada2.set(operador)
+    return
+
+
+def resultado():
+    global operador  
+    try:      
+        opera = str(eval(operador)) 
+        entrada2.set(opera) 
+    except:
+        clear()
+        opera = ("ERROR")
+        entrada2.set(opera)
+    return     
+
+
+
+button0 = ttk.Button(mainframe, text="0",command=lambda:get_number(0), style="Botones_numeros.TButton")
+button1 = ttk.Button(mainframe, text="1",command=lambda:get_number(1), style="Botones_numeros.TButton")
+button2 = ttk.Button(mainframe, text="2",command=lambda:get_number(2), style="Botones_numeros.TButton")
+button3 = ttk.Button(mainframe, text="3",command=lambda:get_number(3), style="Botones_numeros.TButton")
+button4 = ttk.Button(mainframe, text="4",command=lambda:get_number(4), style="Botones_numeros.TButton")
+button5 = ttk.Button(mainframe, text="5",command=lambda:get_number(5), style="Botones_numeros.TButton")
+button6 = ttk.Button(mainframe, text="6",command=lambda:get_number(6), style="Botones_numeros.TButton")
+button7 = ttk.Button(mainframe, text="7",command=lambda:get_number(7), style="Botones_numeros.TButton")
+button8 = ttk.Button(mainframe, text="8",command=lambda:get_number(8), style="Botones_numeros.TButton")
+button9 = ttk.Button(mainframe, text="9",command=lambda:get_number(9), style="Botones_numeros.TButton")
+
+
+button_borrar_todo = ttk.Button(mainframe, text="C",command=lambda:clear(), style="Botnotes_borrar.TButton")
+button_borrar_parentesis1 = ttk.Button(mainframe, text="(",command=lambda:get_number("("), style="Botnotes_restantes.TButton")
+button_borrar_parentesis2 = ttk.Button(mainframe, text=")",command=lambda:get_number(")"), style="Botnotes_restantes.TButton")
+button_punto = ttk.Button(mainframe,text=".",command=lambda:get_number("."),style="Botnotes_restantes.TButton")
+
+button_division = ttk.Button(mainframe, text=chr (247),command=lambda:get_number("/"),style="Botnotes_restantes.TButton")
+button_multiplicación = ttk.Button(mainframe, text="x",command=lambda:get_number("*"),style="Botnotes_restantes.TButton")
+button_resta = ttk.Button(mainframe, text="-",command=lambda:get_number("-"),style="Botnotes_restantes.TButton")
+button_suma = ttk.Button(mainframe, text="+",command=lambda:get_number("+"),style="Botnotes_restantes.TButton")
+
+button_igual = ttk.Button(mainframe, text="=",command=lambda:resultado(),style="Botnotes_restantes.TButton")
+
+
+button_borrar_parentesis1.grid(column=0, row=2,sticky=(W,N,E,S))
+button_borrar_parentesis2.grid(column=1, row=2,sticky=(W,N,E,S))
+button_borrar_todo.grid(column=2, row=2,columnspan=3,  sticky=(W,N,E,S))
+
+
+button7.grid(column=0, row=3,sticky=(W,N,E,S))
+button8.grid(column=1, row=3,sticky=(W,N,E,S))
+button9.grid(column=2, row=3,sticky=(W,N,E,S))
+button_division.grid(column=3, row=3,sticky=(W,N,E,S))
+
+button4.grid(column=0, row=4,sticky=(W,N,E,S))
+button5.grid(column=1, row=4,sticky=(W,N,E,S))
+button6.grid(column=2, row=4,sticky=(W,N,E,S))
+button_multiplicación.grid(column=3, row=4,sticky=(W,N,E,S))
+
+button1.grid(column=0, row=5,sticky=(W,N,E,S))
+button2.grid(column=1, row=5,sticky=(W,N,E,S))
+button3.grid(column=2, row=5,sticky=(W,N,E,S))
+button_suma.grid(column=3, row=5,sticky=(W,N,E,S))
+
+button0.grid(column=0, row=6, columnspan=2, sticky=(W,N,E,S))
+button_punto.grid(column=2, row=6,sticky=(W,N,E,S))
+button_resta.grid(column=3, row=6,sticky=(W,N,E,S))
+
+button_igual.grid(column=0, row=7, columnspan=4, sticky=(W,N,E,S))
+
+
+for child in mainframe.winfo_children():
+    child.grid_configure(ipady=10, padx=1, pady=1)
+
+
+
+
+root.mainloop()
